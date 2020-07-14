@@ -1,0 +1,12 @@
+version: '3.4'
+services:
+  sampleapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sampleapi:latest
+    environment: 
+      - ConnectionStrings:InsuranceConnection= ${InsuranceConnection}
+      - Cache:AWSRedisEndPoint= ${AWSRedisEndPoint}
+    ports:
+      - 5000:80

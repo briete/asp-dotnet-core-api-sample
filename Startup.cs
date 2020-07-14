@@ -22,6 +22,11 @@ namespace dotnet_web_api_sample
         {
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
             services.AddControllers();
+            services.AddStackExchangeRedisCache(options => 
+            {
+                options.Configuration = Configuration["Cache：AWSRedisEndPoint"];
+            });
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,7 +37,8 @@ namespace dotnet_web_api_sample
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            // HTTPS必須にする場合
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -42,6 +48,8 @@ namespace dotnet_web_api_sample
             {
                 endpoints.MapControllers();
             });
+
+            app.UseHealthChecks("/health");
         }
     }
 }
